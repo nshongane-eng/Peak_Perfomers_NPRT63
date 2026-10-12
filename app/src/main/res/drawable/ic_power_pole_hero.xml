@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="160dp"
+    android:viewportWidth="200"
+    android:viewportHeight="160">
+    <!-- Sky background -->
+    <path
+        android:fillColor="#3A6B63"
+        android:pathData="M0,0h200v160h-200z" />
+    <!-- Power lines -->
+    <path
+        android:strokeColor="#101B2D"
+        android:strokeWidth="1.5"
+        android:pathData="M0,20 Q100,50 200,10" />
+    <path
+        android:strokeColor="#101B2D"
+        android:strokeWidth="1.5"
+        android:pathData="M0,35 Q100,65 200,25" />
+    <path
+        android:strokeColor="#101B2D"
+        android:strokeWidth="1.5"
+        android:pathData="M0,50 Q100,80 200,40" />
+    <!-- Power pole structure -->
+    <path
+        android:fillColor="#E5C158"
+        android:pathData="M92,30h16v130h-16z" />
+    <!-- Crossarms -->
+    <path
+        android:fillColor="#C7A341"
+        android:pathData="M70,45h60v10h-60z" />
+    <path
+        android:fillColor="#C7A341"
+        android:pathData="M75,70h50v8h-50z" />
+    <path
+        android:fillColor="#C7A341"
+        android:pathData="M80,95h40v8h-40z" />
+    <path
+        android:fillColor="#C7A341"
+        android:pathData="M85,120h30v8h-30z" />
+    <!-- Insulators -->
+    <path
+        android:fillColor="#5A4A22"
+        android:pathData="M73,40h6v6h-6zM121,40h6v6h-6z" />
+</vector>

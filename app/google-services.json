@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "801374003678",
+    "project_id": "smart-load-shedding-1fe2b",
+    "storage_bucket": "smart-load-shedding-1fe2b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801374003678:android:ee3c38e3ed166f20cefd4f",
+        "android_client_info": {
+          "package_name": "com.peakperformers.smartloadshedding"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRCM9LP8aDAJNsOqe2nPhQFCrbvFTITHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

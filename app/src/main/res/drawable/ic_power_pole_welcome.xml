@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="360dp"
+    android:height="640dp"
+    android:viewportWidth="1080"
+    android:viewportHeight="1920">
+
+    <!-- Teal Green Sky Background Gradient -->
+    <path
+        android:pathData="M0,0h1080v1920h-1080z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:angle="270"
+                android:endColor="#223E38"
+                android:startColor="#3C6A61"
+                android:type="linear" />
+        </aapt:attr>
+    </path>
+
+    <!-- Diagonal Power Lines (spanning across sky) -->
+    <!-- Line 1 (Top Left to Far Right) -->
+    <path
+        android:strokeColor="#1B2B28"
+        android:strokeWidth="5"
+        android:pathData="M-50,80 Q500,620 1130,1100" />
+
+    <!-- Line 2 -->
+    <path
+        android:strokeColor="#1B2B28"
+        android:strokeWidth="5"
+        android:pathData="M-50,220 Q500,760 1130,1240" />
+
+    <!-- Line 3 (Middle Insulator connection) -->
+    <path
+        android:strokeColor="#1B2B28"
+        android:strokeWidth="5"
+        android:pathData="M-50,380 Q500,890 1130,1380" />
+
+    <!-- Line 4 (Right side lower span) -->
+    <path
+        android:strokeColor="#1B2B28"
+        android:strokeWidth="5"
+        android:pathData="M-50,540 Q500,1020 1130,1520" />
+
+    <!-- Power Pole Structure -->
+    <!-- Main Vertical Pole (Double Post Cylindrical Column) -->
+    <!-- Shadow side (Left Post) -->
+    <path
+        android:fillColor="#BFA363"
+        android:pathData="M440,900 L435,1920 L475,1920 L475,900 Z" />
+
+    <!-- Highlight side (Right Post) -->
+    <path
+        android:fillColor="#DDC07B"
+        android:pathData="M475,900 L475,1920 L515,1920 L520,900 Z" />
+
+    <!-- Top Cap Pins & Insulators -->
+    <!-- Center Top Insulator 1 -->
+    <path
+        android:fillColor="#3D291D"
+        android:pathData="M455,870 h15 v30 h-15 z" />
+    <path
+        android:fillColor="#281A12"
+        android:pathData="M450,860 h25 v12 h-25 z" />
+
+    <!-- Center Top Insulator 2 -->
+    <path
+        android:fillColor="#3D291D"
+        android:pathData="M485,870 h15 v30 h-15 z" />
+    <path
+        android:fillColor="#281A12"
+        android:pathData="M480,860 h25 v12 h-25 z" />
+
+    <!-- Left Arm Insulator -->
+    <path
+        android:fillColor="#3D291D"
+        android:pathData="M335,1000 h18 v26 h-18 z" />
+    <path
+        android:fillColor="#281A12"
+        android:pathData="M330,990 h28 v12 h-28 z" />
+
+    <!-- Right Arm Insulator -->
+    <path
+        android:fillColor="#3D291D"
+        android:pathData="M605,940 h18 v26 h-18 z" />
+    <path
+        android:fillColor="#281A12"
+        android:pathData="M600,930 h28 v12 h-28 z" />
+
+    <!-- Main Upper Steel Crossarm (Heavy Beam) -->
+    <path
+        android:fillColor="#C6A862"
+        android:pathData="M320,1020 L620,960 L620,985 L320,1045 Z" />
+
+    <!-- Step Crossbars (Descending ladder rungs) -->
+    <!-- Rung 1 -->
+    <path
+        android:fillColor="#B89B56"
+        android:pathData="M380,1110 L570,1070 L570,1088 L380,1128 Z" />
+
+    <!-- Rung 2 -->
+    <path
+        android:fillColor="#B89B56"
+        android:pathData="M385,1200 L565,1160 L565,1178 L385,1218 Z" />
+
+    <!-- Rung 3 -->
+    <path
+        android:fillColor="#B89B56"
+        android:pathData="M390,1290 L560,1250 L560,1268 L390,1308 Z" />
+
+    <!-- Rung 4 -->
+    <path
+        android:fillColor="#B89B56"
+        android:pathData="M395,1380 L555,1340 L555,1358 L395,1398 Z" />
+
+    <!-- Rung 5 -->
+    <path
+        android:fillColor="#B89B56"
+        android:pathData="M400,1470 L550,1430 L550,1448 L400,1488 Z" />
+
+    <!-- Rung 6 -->
+    <path
+        android:fillColor="#B89B56"
+        android:pathData="M405,1560 L545,1520 L545,1538 L405,1578 Z" />
+
+</vector>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#223E38"
+    android:fitsSystemWindows="true">
+
+    <!-- Hero Power Pole Image -->
+    <ImageView
+        android:id="@+id/ivPowerPoleHero"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/cardBottomContainer"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_power_pole_welcome"
+        android:contentDescription="@string/app_name" />
+
+    <!-- Gradient Overlay for smooth transition into bottom card -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_above="@id/cardBottomContainer"
+        android:background="@drawable/bg_welcome_gradient_overlay" />
+
+    <!-- Bottom Content Card -->
+    <LinearLayout
+        android:id="@+id/cardBottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_welcome_bottom_sheet"
+        android:elevation="12dp"
+        android:orientation="vertical"
+        android:padding="28dp">
+
+        <!-- App Brand Header -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_splash_icon"
+                app:tint="@color/brand_navy"
+                android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/welcome_title"
+                android:textColor="@color/brand_navy"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Subtitle / Tagline -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/welcome_tagline"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:lineSpacingExtra="3dp" />
+
+        <!-- Buttons Container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:orientation="vertical">
+
+            <!-- Sign In Button -->
+            <Button
+                android:id="@+id/btnSignInWelcome"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_rounded_input"
+                android:backgroundTint="@color/brand_navy"
+                android:pointerIcon="hand"
+                android:tooltipText="Click to Sign In"
+                android:text="@string/welcome_sign_in"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Register / Create Account Button -->
+            <Button
+                android:id="@+id/btnRegisterWelcome"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_welcome_outline_btn"
+                app:backgroundTint="@null"
+                android:pointerIcon="hand"
+                android:tooltipText="Click to Create Account"
+                android:text="@string/welcome_create_account"
+                android:textAllCaps="false"
+                android:textColor="@color/brand_navy"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- Footer Caption -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="@string/welcome_footer"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

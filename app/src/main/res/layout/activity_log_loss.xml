@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/background_cream"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="← Back"
+            android:textColor="@color/brand_orange"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log a loss"
+            android:textColor="@color/brand_navy"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="CATEGORY"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <!-- Category grid: 3 rows x 2 columns -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/catLostSales"
+                style="@style/CategoryChip"
+                android:layout_marginEnd="8dp"
+                android:text="💵&#10;Lost Sales" />
+
+            <TextView
+                android:id="@+id/catSpoiledStock"
+                style="@style/CategoryChip"
+                android:layout_marginStart="8dp"
+                android:text="📦&#10;Spoiled Stock" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/catGeneratorFuel"
+                style="@style/CategoryChip"
+                android:layout_marginEnd="8dp"
+                android:text="⛽&#10;Generator Fuel" />
+
+            <TextView
+                android:id="@+id/catIdleWages"
+                style="@style/CategoryChip"
+                android:layout_marginStart="8dp"
+                android:text="👥&#10;Idle Wages" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/catEquipmentDamage"
+                style="@style/CategoryChip"
+                android:layout_marginEnd="8dp"
+                android:text="🔧&#10;Equipment Damage" />
+
+            <TextView
+                android:id="@+id/catOther"
+                style="@style/CategoryChip"
+                android:layout_marginStart="8dp"
+                android:text="📋&#10;Other" />
+        </LinearLayout>
+
+        <!-- Amount -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="AMOUNT (ZAR)"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/etAmount"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_rounded_input"
+            android:hint="R 0"
+            android:inputType="numberDecimal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="18sp" />
+
+        <!-- Notes -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="NOTES (OPTIONAL)"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/etNotes"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_rounded_input"
+            android:hint="e.g. Stage 4"
+            android:minLines="2"
+            android:padding="16dp" />
+
+        <Button
+            android:id="@+id/btnReview"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/bg_rounded_input"
+            android:backgroundTint="@color/brand_navy"
+            android:text="Review"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.SmartLoadShedding" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/brand_navy</item>
+        <item name="colorSecondary">@color/brand_orange</item>
+        <item name="android:windowBackground">@color/background_cream</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="CategoryChip">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/bg_rounded_input</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="Theme.SmartLoadShedding.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/brand_navy</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_icon</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/brand_navy</item>
+        <item name="postSplashScreenTheme">@style/Theme.SmartLoadShedding</item>
+    </style>
+
+</resources>

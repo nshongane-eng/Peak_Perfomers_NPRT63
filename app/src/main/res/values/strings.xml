@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">SmartLoadShedding</string>
+    <string name="grant_deadline">Deadline: %1$s</string>
+    <string name="grants_available_count">4 available</string>
+    <string name="welcome_user">Hi, %1$s</string>
+    <string name="outage_date_time">%1$s, %2$s</string>
+    <string name="outage_duration_stage">%1$s · Stage %2$d</string>
+    <string name="outage_stage">Stage %1$d</string>
+    <string name="outage_stage_short">S%1$d</string>
+    <string name="entry_single">%1$d entry</string>
+    <string name="entry_plural">%1$d entries</string>
+    <string name="zero_timer">00:00:00</string>
+    <string name="outage_starting_now">Outage should be starting now</string>
+    <string name="sample_outage_details">Stage 3 · 2h · Midrand, JHB</string>
+
+    <string name="welcome_title">Smart LoadShedding</string>
+    <string name="welcome_tagline">Track outage schedules, log financial losses, and access energy relief grants for your business.</string>
+    <string name="welcome_sign_in">Sign In</string>
+    <string name="welcome_create_account">Create Account</string>
+    <string name="welcome_footer">Powering local businesses &amp; communities</string>
+
+    <string-array name="suburbs_array">
+        <item>Select your suburb</item>
+        <item>Galeshewe, Kimberley</item>
+        <item>Kimberley Central</item>
+        <item>Roodepan</item>
+        <item>Beaconsfield</item>
+        <item>Homevale</item>
+        <item>Colville</item>
+    </string-array>
+
+    <string-array name="business_type_array">
+        <item>Select your business</item>
+        <item>Spaza Shop</item>
+        <item>Small Grocery Store</item>
+        <item>Hair Salon</item>
+        <item>Internet Café</item>
+        <item>Takeaway Restaurant</item>
+        <item>Other</item>
+    </string-array>
+</resources>
