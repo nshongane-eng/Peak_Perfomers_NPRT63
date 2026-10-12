@@ -1,55 +1,34 @@
-# NPRT63
+# Smart Load Shedding
 
-## NPRT63 - Project
+## Summary
+Smart Load Shedding is an Android application built to help South African residents and small businesses prepare for load shedding and manage electricity-related problems. The app keeps users informed about power outages, sends advance alerts, and allows them to report or track electricity faults.
 
-[![Code License](https://img.shields.io/badge/Code%20License-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Follow%20%40iammelvink-blue.svg?style=social&logo=linkedin)](https://www.linkedin.com/in/iammelvink)
+## Description
+Load shedding is a daily reality for many South Africans, disrupting homes, businesses, and daily routines. Smart Load Shedding was developed to reduce that disruption by giving users the tools they need to plan ahead and stay informed.
 
-## Overview
+The app helps users stay on top of power outages, receive alerts before they happen, and report or track electricity faults in their area. Users can also record how power interruptions affect them and explore possible support opportunities. Overall, Smart Load Shedding aims to help people plan ahead, reduce disruptions to their daily activities, and manage the challenges caused by electricity interruptions more effectively.
 
-This is the codebase produced for the Project course
+## Purpose of the Project
+The main goal of Smart Load Shedding is to make it easier for users to:
+- Stay informed about scheduled and unplanned power outages
+- Receive alerts in advance so they can prepare
+- Report and track electricity faults
+- Record how power interruptions affect them
+- Explore possible support opportunities
 
-Written in **Placeholder**
+## Team Members
+| Name | Surname | Student Number |
+|------|---------|----------------|
+| Nkosinathi Wiseman | Thelede | 202419274 |
+| Rhulani Samuel | Msibi | 202436900 |
+| Oduetse | Modungwa | 202310828 |
+| Nhlakanipho | Mthethwa | 202340769 |
 
-1. Methodologies/Project Management:
+## Getting Started
+1. Clone the repository:
+   git clone [repo URL]
+2. Open the project in Android Studio.
+3. Build and run the app on an emulator or Android device.
 
-   - Agile
-
-2. Coding Practices:
-
-   - OOP (Object Oriented Programming)
-   - MVC (Model View Controller)
-
-3. Programming Languages/Frameworks:
-
-   - Placeholder
-
-## Instructions
-
-1. Make sure you have these installed
-
-2. Clone `ONLY THE LATEST COMMIT` of this repository into your local machine using the terminal (mac) or
-   [Gitbash (PC)](https://git-scm.com/download/win 'Gitbash (PC)') `to save storage space`
-
-   ```sh
-   git clone https://github.com/iammelvink/NPRT63.git --depth=1
-   ```
-
-## Author(s)
-
-"Group members and lecturer"
-
-[Melvin Kisten](https://github.com/iammelvink 'Melvin Kisten\'s GitHub page')
-
-GitHub: @"Group members"
-
-LinkedIn: [Melvin Kisten](https://www.linkedin.com/in/iammelvink 'Melvin Kisten\'s LinkedIn page')
-
-## Acknowledgments
-
-To my lecturer [Melvin Kisten](https://www.linkedin.com/in/iammelvink 'Melvin Kisten\'s LinkedIn page') for their guidance
-
-## More Stuff
-
-Check out some other stuff on
-[Melvin Kisten](https://github.com/iammelvink 'Melvin Kisten\'s GitHub page')
+## License
+[Add license info if applicable]
