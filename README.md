@@ -24,11 +24,6 @@ The main goal of Smart Load Shedding is to make it easier for users to:
 | Oduetse | Modungwa | 202310828 |
 | Nhlakanipho | Mthethwa | 202340769 |
 
-## Getting Started
-1. Clone the repository:
-   git clone [repo URL]
-2. Open the project in Android Studio.
-3. Build and run the app on an emulator or Android device.
 
-## License
-[Add license info if applicable]
+
+
