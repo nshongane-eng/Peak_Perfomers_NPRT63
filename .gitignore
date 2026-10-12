@@ -1,17 +1,39 @@
+# Android Studio and IntelliJ
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+.idea/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Gradle
+.gradle/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Local machine configuration
 local.properties
 
-.idea/
+# Generated Android files
+*.apk
+*.aab
+*.hprof
+output.json
+
+# Signing keys and credentials
+*.jks
+*.keystore
+
+# Firebase configuration
+# Uncomment the next line if this file contains configuration you don't want public
+# app/google-services.json
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Merge conflict backup files
+*.orig
+*.BACKUP.*
+*.LOCAL.*
+*.REMOTE.*
