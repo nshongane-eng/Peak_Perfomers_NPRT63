@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Smart Load Shedding</title>
+  <meta name="theme-color" content="#101B2D">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Smart Load Shedding">
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root {
+      --brand-navy: #101B2D;
+      --brand-navy-light: #1B2A4A;
+      --brand-orange: #E8722C;
+      --brand-orange-soft: #FFF3EB;
+      --bg-cream: #F5F1EA;
+      --card-bg: #FFFFFF;
+      --text-primary: #101B2D;
+      --text-secondary: #6B7280;
+      --border-color: #E5E7EB;
+      --danger: #DC2626;
+      --success: #16A34A;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-top: env(safe-area-inset-top, 0px);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding-bottom: calc(75px + var(--safe-bottom));
+      user-select: none;
+    }
+    #app-container {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: var(--bg-cream);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    /* Top Header */
+    header {
+      background: var(--brand-navy);
+      color: white;
+      padding: calc(16px + var(--safe-top)) 20px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-logo {
+      width: 28px;
+      height: 28px;
+      background: var(--brand-orange);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .header-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-btn {
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Screen Views */
+    .tab-content {
+      display: none;
+      padding: 16px 16px 24px;
+      flex: 1;
+      animation: fadeIn 0.15s ease-in-out;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+    .card-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    /* Outage Banner */
+    .hero-countdown {
+      background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-light) 100%);
+      color: white;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 15px rgba(16,27,45,0.2);
+    }
+    .countdown-timer {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #FFD29D;
+      margin: 4px 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .countdown-subtitle {
+      font-size: 13px;
+      opacity: 0.85;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge-stage {
+      background: var(--brand-orange);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    /* Quick Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .metric-card {
+      background: white;
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid rgba(0,0,0,0.04);
+      cursor: pointer;
+    }
+    .metric-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--brand-navy);
+      margin-top: 4px;
+    }
+    .metric-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* Checklist */
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #F3F4F6;
+      cursor: pointer;
+    }
+    .checklist-item:last-child {
+      border-bottom: none;
+    }
+    .checklist-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--brand-orange);
+      cursor: pointer;
+    }
+    .checklist-item span {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--brand-navy);
+    }
+    .progress-bar-bg {
+      background: #E5E7EB;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 10px 0 6px;
+    }
+    .progress-bar-fill {
+      background: var(--brand-orange);
+      height: 100%;
+      width: 60%;
+      transition: width 0.3s ease;
+    }
+
+    /* Horizontal Filter Chips */
+    .filter-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .filter-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .filter-chip {
+      background: white;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-chip.active {
+      background: var(--brand-orange);
+      color: white;
+      border-color: var(--brand-orange);
+    }
+
+    /* Schedule List */
+    .schedule-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+    .schedule-time {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--brand-navy);
+    }
+    .schedule-duration {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Losses List */
+    .loss-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      border-left: 4px solid var(--brand-orange);
+    }
+    .loss-cat {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--brand-navy);
+    }
+    .loss-note {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .loss-amount {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--danger);
+      text-align: right;
+    }
+    .loss-date {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    /* Grants List */
+    .grant-card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+    .grant-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+    .grant-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brand-navy);
+      flex: 1;
+      padding-right: 10px;
+    }
+    .grant-provider {
+      background: var(--brand-navy-light);
+      color: white;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .grant-amount {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--success);
+      margin: 6px 0;
+    }
+    .grant-deadline {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* Community Tips */
+    .tip-card {
+      background: white;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--brand-navy);
+      border-left: 4px solid var(--brand-navy);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--brand-orange);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(232,114,44,0.25);
+    }
+    .btn-secondary {
+      background: white;
+      color: var(--brand-navy);
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    /* Search Input */
+    .search-box {
+      width: 100%;
+      padding: 12px 16px;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 14px;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    .search-box:focus {
+      border-color: var(--brand-orange);
+    }
+
+    /* Bottom Navigation Bar */
+    nav.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 480px;
+      background: var(--brand-navy);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 6px calc(8px + var(--safe-bottom));
+      box-shadow: 0 -3px 12px rgba(0,0,0,0.12);
+      z-index: 100;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: none;
+      border: none;
+      color: #9CA3AF;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 8px;
+      gap: 4px;
+      transition: color 0.15s;
+    }
+    .nav-item.active {
+      color: var(--brand-orange);
+    }
+    .nav-icon {
+      font-size: 20px;
+    }
+
+    /* Modal Sheet */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 200;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-sheet {
+      background: white;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 20px 20px 0 0;
+      padding: 24px 20px calc(24px + var(--safe-bottom));
+      animation: slideUp 0.25s ease-out;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .form-control {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="app-container">
+    <!-- Header -->
+    <header>
+      <div class="header-brand">
+        <div class="header-logo">⚡</div>
+        <div class="header-title">Smart Load Shedding</div>
+      </div>
+      <div class="header-actions">
+        <button class="header-btn" onclick="openProfileModal()">
+          <span>👤</span> <span id="headerProfileName">Midrand SME</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- TAB 1: HOME -->
+    <main id="tab-home" class="tab-content active">
+      <!-- Outage Countdown Hero -->
+      <div class="hero-countdown" onclick="switchTab('schedule')">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="badge-stage">STAGE 3 ACTIVE</span>
+          <span style="font-size:12px; opacity:0.85;">📍 Midrand, JHB</span>
+        </div>
+        <div class="countdown-timer" id="countdown">01:42:15</div>
+        <div class="countdown-subtitle">
+          <span>⚠️ Scheduled 2-hour cut starts soon. Tap for timetable.</span>
+        </div>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-card" onclick="switchTab('losses')">
+          <div class="card-title">This Week's Loss</div>
+          <div class="metric-value" id="homeTotalLosses">R 6,200</div>
+          <div class="metric-sub">3 entries logged ›</div>
+        </div>
+        <div class="metric-card" onclick="switchTab('grants')">
+          <div class="card-title">Relief Grants</div>
+          <div class="metric-value">5 Available</div>
+          <div class="metric-sub">Up to R250k funding ›</div>
+        </div>
+      </div>
+
+      <!-- Preparedness Checklist -->
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="card-title" style="margin:0;">Business Resilience Checklist</div>
+          <span id="scoreText" style="font-size:13px; font-weight:800; color:var(--brand-orange);">60% Ready</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="scoreFill"></div>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="chk1" checked onchange="updateChecklist()">
+          <span>Surge protectors on POS &amp; refrigeration</span>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="chk2" checked onchange="updateChecklist()">
+          <span>Generator diesel refilled &amp; tested</span>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="chk3" checked onchange="updateChecklist()">
+          <span>UPS &amp; emergency lighting charged</span>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="chk4" onchange="updateChecklist()">
+          <span>Emergency electrician &amp; ward contacts</span>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="chk5" onchange="updateChecklist()">
+          <span>Daily financial loss logged</span>
+        </div>
+      </div>
+
+      <!-- Daily Survival Tip -->
+      <div class="card" onclick="cycleTip()" style="cursor:pointer; background:var(--brand-orange-soft); border-color:#FFD29D;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+          <span style="font-size:12px; font-weight:800; color:var(--brand-orange);">💡 DAILY SURVIVAL TIP</span>
+          <span style="font-size:11px; color:var(--brand-orange);">Tap for next ›</span>
+        </div>
+        <p id="dailyTipText" style="font-size:13.5px; line-height:1.4; color:var(--brand-navy); font-weight:500;">
+          Unplug heavy inductive motors and commercial fridges 5 minutes before power returns to protect equipment against voltage surge spikes.
+        </p>
+      </div>
+
+      <button class="btn-primary" onclick="openLogModal()">
+        <span>➕</span> Log a Business Loss Today
+      </button>
+    </main>
+
+    <!-- TAB 2: SCHEDULE -->
+    <main id="tab-schedule" class="tab-content">
+      <div class="card-title">Select Your Area</div>
+      <div class="filter-scroll" id="locationChips">
+        <button class="filter-chip active" onclick="selectLocation('Midrand')">Midrand, JHB</button>
+        <button class="filter-chip" onclick="selectLocation('Sandton')">Sandton, JHB</button>
+        <button class="filter-chip" onclick="selectLocation('Centurion')">Centurion, PTA</button>
+        <button class="filter-chip" onclick="selectLocation('Pretoria')">Pretoria, PTA</button>
+        <button class="filter-chip" onclick="selectLocation('Cape Town')">Cape Town, WC</button>
+        <button class="filter-chip" onclick="selectLocation('Durban')">Durban, KZN</button>
+      </div>
+
+      <div style="margin: 12px 0 8px; font-size:13px; font-weight:700; color:var(--text-secondary);" id="scheduleHeader">
+        Upcoming Outages for Midrand
+      </div>
+
+      <div id="scheduleListContainer"></div>
+    </main>
+
+    <!-- TAB 3: LOSSES -->
+    <main id="tab-losses" class="tab-content">
+      <div class="hero-countdown" style="padding:16px; margin-bottom:12px;">
+        <div class="card-title" style="color:rgba(255,255,255,0.7); margin-bottom:2px;">Total Financial Losses Logged</div>
+        <div class="countdown-timer" id="lossesTotalDisplay" style="color:white; font-size:32px;">R 6,200.00</div>
+        <div style="font-size:12px; opacity:0.85;">Essential proof for insurance &amp; energy relief grant applications</div>
+      </div>
+
+      <div style="display:flex; gap:8px; margin-bottom:12px;">
+        <button class="btn-primary" style="flex:1; padding:11px;" onclick="openLogModal()">
+          <span>➕</span> Log Loss
+        </button>
+        <button class="btn-secondary" style="flex:1; margin:0; padding:11px;" onclick="exportCSV()">
+          <span>📊</span> Export CSV
+        </button>
+      </div>
+
+      <div class="filter-scroll" id="lossCategoryChips">
+        <button class="filter-chip active" onclick="filterLossCategory('All')">All</button>
+        <button class="filter-chip" onclick="filterLossCategory('Lost Sales')">Lost Sales</button>
+        <button class="filter-chip" onclick="filterLossCategory('Spoiled Stock')">Spoiled Stock</button>
+        <button class="filter-chip" onclick="filterLossCategory('Generator Fuel')">Generator Fuel</button>
+        <button class="filter-chip" onclick="filterLossCategory('Extra Wages')">Extra Wages</button>
+        <button class="filter-chip" onclick="filterLossCategory('Equipment Damage')">Damage</button>
+      </div>
+
+      <div id="lossesListContainer" style="margin-top:10px;"></div>
+    </main>
+
+    <!-- TAB 4: GRANTS -->
+    <main id="tab-grants" class="tab-content">
+      <input type="text" class="search-box" id="grantSearch" placeholder="🔍 Search grants (e.g. SEDA, Solar, SEFA)..." oninput="renderGrants()">
+      <div id="grantsListContainer"></div>
+    </main>
+
+    <!-- TAB 5: COMMUNITY TIPS -->
+    <main id="tab-community" class="tab-content">
+      <input type="text" class="search-box" id="tipSearch" placeholder="🔍 Search SME coping tips..." oninput="renderTips()">
+
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">Share a Coping Tip</div>
+        <textarea id="newTipInput" class="form-control" rows="2" placeholder="e.g. How your bakery or salon manages stage 4 outages..." style="resize:none; margin-bottom:10px;"></textarea>
+        <button class="btn-primary" style="padding:10px;" onclick="submitTip()">Post Tip to Community</button>
+      </div>
+
+      <div class="card-title">Verified Community Insights</div>
+      <div id="tipsListContainer"></div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" onclick="switchTab('home')">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('schedule')">
+        <span class="nav-icon">📅</span>
+        <span>Schedule</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('losses')">
+        <span class="nav-icon">💸</span>
+        <span>Losses</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('grants')">
+        <span class="nav-icon">🎁</span>
+        <span>Grants</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('community')">
+        <span class="nav-icon">💬</span>
+        <span>Community</span>
+      </button>
+    </nav>
+
+    <!-- MODAL: LOG LOSS -->
+    <div class="modal-overlay" id="modalLogLoss" onclick="closeModalOnBg(event, 'modalLogLoss')">
+      <div class="modal-sheet">
+        <h3 style="font-size:18px; margin-bottom:14px; color:var(--brand-navy);">Log Electricity Outage Loss</h3>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="logCategory" class="form-control">
+            <option value="Lost Sales">Lost Sales (Closed during outage)</option>
+            <option value="Spoiled Stock">Spoiled Stock (Freezer / Fridge failure)</option>
+            <option value="Generator Fuel">Generator Fuel (Diesel / Petrol)</option>
+            <option value="Extra Wages">Extra Wages (Overtime &amp; idle staff)</option>
+            <option value="Equipment Damage">Equipment Damage (Surge / power cut)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Amount (ZAR - Rands)</label>
+          <input type="number" id="logAmount" class="form-control" placeholder="e.g. 1500" step="10">
+        </div>
+        <div class="form-group">
+          <label>Details / Notes</label>
+          <input type="text" id="logNotes" class="form-control" placeholder="e.g. Ice cream melted during 4h cut">
+        </div>
+        <button class="btn-primary" onclick="saveNewLoss()">Save Loss Entry</button>
+        <button class="btn-secondary" onclick="closeModal('modalLogLoss')">Cancel</button>
+      </div>
+    </div>
+
+    <!-- MODAL: BUSINESS PROFILE -->
+    <div class="modal-overlay" id="modalProfile" onclick="closeModalOnBg(event, 'modalProfile')">
+      <div class="modal-sheet">
+        <h3 style="font-size:18px; margin-bottom:14px; color:var(--brand-navy);">Business Profile</h3>
+        <div class="form-group">
+          <label>Business Name</label>
+          <input type="text" id="profileNameInput" class="form-control" value="Midrand SME">
+        </div>
+        <div class="form-group">
+          <label>Location / Suburb</label>
+          <select id="profileSuburbInput" class="form-control">
+            <option value="Midrand">Midrand, JHB</option>
+            <option value="Sandton">Sandton, JHB</option>
+            <option value="Centurion">Centurion, PTA</option>
+            <option value="Pretoria">Pretoria, PTA</option>
+            <option value="Galeshewe">Galeshewe, Kimberley</option>
+            <option value="Cape Town">Cape Town, WC</option>
+            <option value="Durban">Durban, KZN</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Business Sector</label>
+          <select id="profileTypeInput" class="form-control">
+            <option value="Bakery / Food Service">Bakery / Food Service</option>
+            <option value="Spaza / Grocery">Spaza / Grocery Store</option>
+            <option value="Hair & Beauty Salon">Hair &amp; Beauty Salon</option>
+            <option value="Tech / Internet Cafe">Tech / Internet Cafe</option>
+            <option value="Retail Boutique">Retail Boutique</option>
+            <option value="Other Small Business">Other Small Business</option>
+          </select>
+        </div>
+        <button class="btn-primary" onclick="saveProfile()">Save Profile</button>
+        <button class="btn-secondary" onclick="closeModal('modalProfile')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initial State & Seed Data
+    const defaultLosses = [
+      { id: 1, category: "Spoiled Stock", amount: 1850.00, notes: "Fridge failure during stage 4 outage", date: "13 May 2026, 14:30" },
+      { id: 2, category: "Generator Fuel", amount: 950.00, notes: "Diesel for 8-hour load shedding", date: "12 May 2026, 09:15" },
+      { id: 3, category: "Lost Sales", amount: 3400.00, notes: "Card machines down during morning peak", date: "11 May 2026, 11:00" }
+    ];
+
+    const schedules = {
+      "Midrand": [
+        { day: "Mon 12 May", time: "06:00", duration: "2h", stage: 2 },
+        { day: "Mon 12 May", time: "14:00", duration: "2h", stage: 3 },
+        { day: "Tue 13 May", time: "08:00", duration: "2.5h", stage: 4 },
+        { day: "Tue 13 May", time: "18:00", duration: "2h", stage: 3 },
+        { day: "Wed 14 May", time: "04:00", duration: "2h", stage: 1 },
+        { day: "Thu 15 May", time: "10:00", duration: "2h", stage: 2 },
+        { day: "Fri 16 May", time: "16:00", duration: "4h", stage: 5 }
+      ],
+      "Sandton": [
+        { day: "Mon 12 May", time: "08:00", duration: "2h", stage: 3 },
+        { day: "Tue 13 May", time: "16:00", duration: "2.5h", stage: 4 },
+        { day: "Wed 14 May", time: "10:00", duration: "2h", stage: 3 },
+        { day: "Thu 15 May", time: "14:00", duration: "2h", stage: 4 },
+        { day: "Fri 16 May", time: "08:00", duration: "3h", stage: 5 }
+      ],
+      "Centurion": [
+        { day: "Mon 12 May", time: "04:00", duration: "2h", stage: 2 },
+        { day: "Tue 13 May", time: "12:00", duration: "2h", stage: 2 },
+        { day: "Wed 14 May", time: "18:00", duration: "2.5h", stage: 3 },
+        { day: "Thu 15 May", time: "06:00", duration: "2h", stage: 2 }
+      ],
+      "Pretoria": [
+        { day: "Mon 12 May", time: "10:00", duration: "3h", stage: 4 },
+        { day: "Tue 13 May", time: "20:00", duration: "2h", stage: 3 },
+        { day: "Wed 14 May", time: "08:00", duration: "2h", stage: 2 }
+      ],
+      "Cape Town": [
+        { day: "Mon 12 May", time: "06:00", duration: "2h", stage: 1 },
+        { day: "Tue 13 May", time: "14:00", duration: "2h", stage: 2 },
+        { day: "Wed 14 May", time: "22:00", duration: "2h", stage: 1 }
+      ],
+      "Durban": [
+        { day: "Mon 12 May", time: "12:00", duration: "2h", stage: 2 },
+        { day: "Tue 13 May", time: "08:00", duration: "2h", stage: 1 },
+        { day: "Wed 14 May", time: "16:00", duration: "2.5h", stage: 3 }
+      ]
+    };
+
+    const grants = [
+      { name: "Small Business Energy Relief Fund", provider: "SEDA", deadline: "15 June 2026", amount: "Up to R50,000", desc: "Non-repayable equipment grant for backup power and energy storage." },
+      { name: "Township Enterprise Energy Support", provider: "SEFA", deadline: "30 July 2026", amount: "Up to R30,000", desc: "Direct funding for refrigeration protection and UPS installations." },
+      { name: "Green Energy Transition Grant", provider: "DTIC", deadline: "1 September 2026", amount: "Up to R100,000", desc: "Co-funding for solar photovoltaic systems and commercial batteries." },
+      { name: "IDC Commercial Solar & Inverter Financing", provider: "IDC", deadline: "15 October 2026", amount: "Up to R250,000", desc: "Low-interest facility for factory and manufacturing backup power." },
+      { name: "Eskom Business Resilience & Backup Voucher", provider: "Eskom", deadline: "30 November 2026", amount: "Up to R25,000", desc: "Vouchers for automated transfer switches and surge arrester installation." }
+    ];
+
+    const tips = [
+      "Bakery (Soweto): We bake our dough during stable grid hours and freeze unbaked pastries to save on generator diesel!",
+      "Retail Supermarket (Midrand): Motion-sensor solar emergency lights keep our store aisles safe and lit during evening stage 3 outages.",
+      "Tech Startup (Sandton): Using cloud-hosted billing systems lets our staff work remotely during unexpected stage 4 cuts.",
+      "Hair Salon (Rosebank): We use cordless rechargeable hair clippers and backup ring lights so clients never miss their appointments.",
+      "Cold Storage (Centurion): Adding phase-change thermal ice packs to our delivery trucks keeps perishables cold for 6+ hours without power.",
+      "Restaurant (Melville): We switched our gas stove tops to piezo-ignition pilot lights so we can continue cooking hot meals instantly when power drops.",
+      "Print Shop (Braamfontein): Investing in a small online UPS for our card machines and fiber router keeps transactions processing smoothly.",
+      "Auto Workshop (Randburg): Air compressors are heavy inductive loads; we stagger our pneumatic tool usage so the inverter doesn't trip."
+    ];
+
+    const survivalTips = [
+      "Unplug heavy inductive motors and commercial fridges 5 minutes before power returns to protect equipment against voltage surge spikes.",
+      "Keep refrigerator and freezer doors tightly closed during outages. A closed commercial fridge maintains safe temperatures for up to 4 hours.",
+      "Clean your generator's air filter monthly and test-run it weekly under a light load to ensure reliability during stage 4+ outages.",
+      "Install automatic voltage regulators (AVRs) on sensitive point-of-sale (POS) terminals and card machines.",
+      "Document losses immediately with photos and timestamps in the Losses tab to streamline insurance or grant claims."
+    ];
+
+    // LocalStorage State
+    let userLosses = JSON.parse(localStorage.getItem('smart_losses')) || defaultLosses;
+    let userTips = JSON.parse(localStorage.getItem('smart_tips')) || tips;
+    let currentLocation = localStorage.getItem('smart_location') || 'Midrand';
+    let currentLossFilter = 'All';
+    let tipIndex = 0;
+
+    // Navigation Switcher
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+
+      const activeTab = document.getElementById('tab-' + tabId);
+      if (activeTab) activeTab.classList.add('active');
+
+      const navButtons = document.querySelectorAll('.nav-item');
+      const tabOrder = ['home', 'schedule', 'losses', 'grants', 'community'];
+      const index = tabOrder.indexOf(tabId);
+      if (index !== -1 && navButtons[index]) {
+        navButtons[index].classList.add('active');
+      }
+      window.scrollTo(0, 0);
+    }
+
+    // Countdown Timer
+    function startCountdown() {
+      let secondsRemaining = 6135; // ~1h 42m
+      setInterval(() => {
+        if (secondsRemaining > 0) {
+          secondsRemaining--;
+          const hrs = String(Math.floor(secondsRemaining / 3600)).padStart(2, '0');
+          const mins = String(Math.floor((secondsRemaining % 3600) / 60)).padStart(2, '0');
+          const secs = String(secondsRemaining % 60).padStart(2, '0');
+          document.getElementById('countdown').innerText = `${hrs}:${mins}:${secs}`;
+        }
+      }, 1000);
+    }
+
+    // Schedule Tab
+    function selectLocation(loc) {
+      currentLocation = loc;
+      localStorage.setItem('smart_location', loc);
+      document.querySelectorAll('#locationChips button').forEach(b => {
+        b.classList.toggle('active', b.innerText.includes(loc));
+      });
+      document.getElementById('scheduleHeader').innerText = `Upcoming Outages for ${loc}`;
+      renderSchedule();
+    }
+
+    function renderSchedule() {
+      const container = document.getElementById('scheduleListContainer');
+      const list = schedules[currentLocation] || schedules["Midrand"];
+      container.innerHTML = list.map(item => `
+        <div class="schedule-card">
+          <div>
+            <div class="schedule-time">${item.day} · ${item.time}</div>
+            <div class="schedule-duration">Duration: ${item.duration}</div>
+          </div>
+          <span class="badge-stage" style="background:${item.stage >= 4 ? '#DC2626' : 'var(--brand-orange)'};">STAGE ${item.stage}</span>
+        </div>
+      `).join('');
+    }
+
+    // Losses Tab
+    function renderLosses() {
+      const container = document.getElementById('lossesListContainer');
+      const filtered = currentLossFilter === 'All'
+        ? userLosses
+        : userLosses.filter(l => l.category.toLowerCase().includes(currentLossFilter.toLowerCase()));
+
+      const total = userLosses.reduce((acc, curr) => acc + Number(curr.amount), 0);
+      document.getElementById('lossesTotalDisplay').innerText = `R ${total.toLocaleString('en-ZA', { minimumFractionDigits: 2 })}`;
+      document.getElementById('homeTotalLosses').innerText = `R ${total.toLocaleString('en-ZA')}`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-secondary); padding:24px;">No losses recorded in this category.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(l => `
+        <div class="loss-card">
+          <div>
+            <div class="loss-cat">${l.category}</div>
+            <div class="loss-note">${l.notes || 'No description'}</div>
+            <div class="loss-date">📅 ${l.date}</div>
+          </div>
+          <div class="loss-amount">R ${Number(l.amount).toFixed(2)}</div>
+        </div>
+      `).join('');
+    }
+
+    function filterLossCategory(cat) {
+      currentLossFilter = cat;
+      document.querySelectorAll('#lossCategoryChips button').forEach(b => {
+        b.classList.toggle('active', b.innerText === cat);
+      });
+      renderLosses();
+    }
+
+    function saveNewLoss() {
+      const cat = document.getElementById('logCategory').value;
+      const amt = parseFloat(document.getElementById('logAmount').value);
+      const notes = document.getElementById('logNotes').value.trim();
+
+      if (isNaN(amt) || amt <= 0) {
+        alert('Please enter a valid loss amount.');
+        return;
+      }
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) + ', ' +
+                      now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+      userLosses.unshift({
+        id: Date.now(),
+        category: cat,
+        amount: amt,
+        notes: notes,
+        date: dateStr
+      });
+
+      localStorage.setItem('smart_losses', JSON.stringify(userLosses));
+      document.getElementById('logAmount').value = '';
+      document.getElementById('logNotes').value = '';
+      closeModal('modalLogLoss');
+      renderLosses();
+      alert(`Success: Logged R ${amt.toFixed(2)} under ${cat}`);
+    }
+
+    function exportCSV() {
+      const business = localStorage.getItem('smart_business_name') || 'Smart LoadShedding SME';
+      let csv = `Business,${business}\nReport Date,${new Date().toLocaleDateString()}\n\nID,Category,Amount (ZAR),Notes,Date\n`;
+      userLosses.forEach(l => {
+        csv += `${l.id},"${l.category}",${l.amount},"${l.notes}","${l.date}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `LoadShedding_Loss_Report_${Date.now()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // Grants Tab
+    function renderGrants() {
+      const query = (document.getElementById('grantSearch').value || '').toLowerCase();
+      const container = document.getElementById('grantsListContainer');
+      const filtered = grants.filter(g =>
+        g.name.toLowerCase().includes(query) ||
+        g.provider.toLowerCase().includes(query) ||
+        g.desc.toLowerCase().includes(query)
+      );
+
+      container.innerHTML = filtered.map(g => `
+        <div class="grant-card">
+          <div class="grant-header">
+            <div class="grant-name">${g.name}</div>
+            <span class="grant-provider">${g.provider}</span>
+          </div>
+          <p style="font-size:13px; color:var(--text-secondary); margin-bottom:6px;">${g.desc}</p>
+          <div class="grant-amount">${g.amount}</div>
+          <div class="grant-deadline">⏳ Application Deadline: ${g.deadline}</div>
+        </div>
+      `).join('');
+    }
+
+    // Community Tips
+    function renderTips() {
+      const query = (document.getElementById('tipSearch').value || '').toLowerCase();
+      const container = document.getElementById('tipsListContainer');
+      const filtered = userTips.filter(t => t.toLowerCase().includes(query));
+
+      container.innerHTML = filtered.map(t => `
+        <div class="tip-card">${t}</div>
+      `).join('');
+    }
+
+    function submitTip() {
+      const input = document.getElementById('newTipInput');
+      const text = input.value.trim();
+      if (!text) {
+        alert('Please write your tip before sharing.');
+        return;
+      }
+      userTips.unshift(`Business Community: ${text}`);
+      localStorage.setItem('smart_tips', JSON.stringify(userTips));
+      input.value = '';
+      renderTips();
+      alert('Thank you! Your coping tip is now visible to the community.');
+    }
+
+    // Checklist & Score
+    function updateChecklist() {
+      const boxes = [chk1, chk2, chk3, chk4, chk5];
+      const checked = boxes.filter(b => b.checked).length;
+      const pct = (checked / boxes.length) * 100;
+      document.getElementById('scoreFill').style.width = pct + '%';
+      document.getElementById('scoreText').innerText = `${pct}% Ready`;
+    }
+
+    function cycleTip() {
+      tipIndex = (tipIndex + 1) % survivalTips.length;
+      document.getElementById('dailyTipText').innerText = survivalTips[tipIndex];
+    }
+
+    // Modals
+    function openLogModal() {
+      document.getElementById('modalLogLoss').classList.add('open');
+    }
+    function openProfileModal() {
+      document.getElementById('modalProfile').classList.add('open');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+    function closeModalOnBg(e, id) {
+      if (e.target.id === id) closeModal(id);
+    }
+    function saveProfile() {
+      const name = document.getElementById('profileNameInput').value.trim() || 'Midrand SME';
+      const sub = document.getElementById('profileSuburbInput').value;
+      localStorage.setItem('smart_business_name', name);
+      document.getElementById('headerProfileName').innerText = name;
+      closeModal('modalProfile');
+      selectLocation(sub);
+      alert('Profile updated successfully!');
+    }
+
+    // On Load
+    window.addEventListener('DOMContentLoaded', () => {
+      startCountdown();
+      renderSchedule();
+      renderLosses();
+      renderGrants();
+      renderTips();
+      const savedName = localStorage.getItem('smart_business_name');
+      if (savedName) document.getElementById('headerProfileName').innerText = savedName;
+    });
+  </script>
+</body>
+</html>
