@@ -1,5 +1,7 @@
 # Smart Load Shedding
 
+> 🌐 **Live App:** Access and run the app online here: [Smart Load Shedding](YOUR_APPETIZE_LINK_HERE)
+
 ## Summary
 Smart Load Shedding is an Android application built to help South African residents and small businesses prepare for load shedding and manage electricity-related problems. The app keeps users informed about power outages, sends advance alerts, and allows them to report or track electricity faults.
 
@@ -23,7 +25,3 @@ The main goal of Smart Load Shedding is to make it easier for users to:
 | Rhulani Samuel | Msibi | 202436900 |
 | Oduetse | Modungwa | 202310828 |
 | Nhlakanipho | Mthethwa | 202340769 |
-
-
-
-
