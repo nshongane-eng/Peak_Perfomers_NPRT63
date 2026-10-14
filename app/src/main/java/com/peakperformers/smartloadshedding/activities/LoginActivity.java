@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnSignIn = findViewById(R.id.btnSignIn);
+        Button btnDemo = findViewById(R.id.btnDemoLogin);
         progressBar = findViewById(R.id.progressBar);
         TextView tvCreateAccount = findViewById(R.id.tvCreateAccount);
 
@@ -46,6 +47,10 @@ public class LoginActivity extends AppCompatActivity {
 
         btnSignIn.setOnClickListener(v -> attemptLogin());
 
+        if (btnDemo != null) {
+            btnDemo.setOnClickListener(v -> enterDemoMode());
+        }
+
         tvCreateAccount.setOnClickListener(v -> {
             String currentEmail = etEmail.getText().toString().trim();
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -53,6 +58,23 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("email", currentEmail);
             }
             startActivity(intent);
+        });
+    }
+
+    private void enterDemoMode() {
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            com.peakperformers.smartloadshedding.database.AppDatabase db =
+                    com.peakperformers.smartloadshedding.database.AppDatabase.getInstance(getApplicationContext());
+            if (db.businessDao().getFirst() == null) {
+                com.peakperformers.smartloadshedding.database.BusinessEntity demo =
+                        new com.peakperformers.smartloadshedding.database.BusinessEntity();
+                demo.firebaseUid = "demo_guest_user";
+                demo.name = "Peak Bakery & Cafe";
+                demo.suburb = "Midrand";
+                demo.businessType = "Bakery / Food Service";
+                db.businessDao().insertOrUpdate(demo);
+            }
+            runOnUiThread(this::goToHome);
         });
     }
 

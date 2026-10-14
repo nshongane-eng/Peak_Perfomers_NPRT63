@@ -177,6 +177,36 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/rowServerUrl"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_rounded_input"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🌐 API Server URL"
+                android:textColor="@color/brand_navy"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvCurrentServerUrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Configure"
+                android:textColor="@color/brand_orange"
+                android:textSize="13sp" />
+        </LinearLayout>
+
         <!-- Section: About -->
         <TextView
             android:layout_width="wrap_content"

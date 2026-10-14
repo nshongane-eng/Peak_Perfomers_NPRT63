@@ -106,6 +106,19 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <!-- Instant Access / Demo Mode Button for Link Visitors -->
+            <Button
+                android:id="@+id/btnDemoWelcome"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/transparent"
+                android:text="⚡ Explore Demo Mode (Instant Access)"
+                android:textAllCaps="false"
+                android:textColor="@color/brand_orange"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
         <!-- Footer Caption -->

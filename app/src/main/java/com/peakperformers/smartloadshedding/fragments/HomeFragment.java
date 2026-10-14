@@ -117,30 +117,37 @@ public class HomeFragment extends Fragment {
         setupReminderSwitch(view);
 
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            String uid = currentUser.getUid();
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            executor.execute(() -> {
-                try {
-                    AppDatabase db = AppDatabase.getInstance(requireContext().getApplicationContext());
-                    BusinessEntity business = db.businessDao().getByUid(uid);
-
-                    if (getActivity() == null) return;
-
-                    getActivity().runOnUiThread(() -> {
-                        if (isAdded()) {
-                            if (business != null && business.name != null) {
-                                tvWelcome.setText(getString(R.string.welcome_user, business.name));
-                            } else {
-                                tvWelcome.setText(getString(R.string.welcome_user, currentUser.getEmail()));
-                            }
-                        }
-                    });
-                } finally {
-                    executor.shutdown();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            try {
+                if (getContext() == null) return;
+                AppDatabase db = AppDatabase.getInstance(requireContext().getApplicationContext());
+                BusinessEntity business = null;
+                if (currentUser != null) {
+                    business = db.businessDao().getByUid(currentUser.getUid());
                 }
-            });
-        }
+                if (business == null) {
+                    business = db.businessDao().getFirst();
+                }
+
+                final BusinessEntity finalBusiness = business;
+                if (getActivity() == null) return;
+
+                getActivity().runOnUiThread(() -> {
+                    if (isAdded()) {
+                        if (finalBusiness != null && finalBusiness.name != null && !finalBusiness.name.trim().isEmpty()) {
+                            tvWelcome.setText(getString(R.string.welcome_user, finalBusiness.name));
+                        } else if (currentUser != null && currentUser.getEmail() != null) {
+                            tvWelcome.setText(getString(R.string.welcome_user, currentUser.getEmail()));
+                        } else {
+                            tvWelcome.setText(getString(R.string.welcome_user, "Peak Performer"));
+                        }
+                    }
+                });
+            } finally {
+                executor.shutdown();
+            }
+        });
 
         btnHamburger.setOnClickListener(v -> {
             if (getActivity() instanceof MainActivity) {

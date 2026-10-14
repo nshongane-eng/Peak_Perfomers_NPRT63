@@ -36,8 +36,8 @@ public class BusinessProfileActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             uid = user.getUid();
-            loadProfile();
         }
+        loadProfile();
 
         btnSaveProfile.setOnClickListener(v -> saveProfile());
     }
@@ -45,13 +45,20 @@ public class BusinessProfileActivity extends AppCompatActivity {
     private void loadProfile() {
         Executors.newSingleThreadExecutor().execute(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-            BusinessEntity business = db.businessDao().getByUid(uid);
+            BusinessEntity business = null;
+            if (uid != null) {
+                business = db.businessDao().getByUid(uid);
+            }
+            if (business == null) {
+                business = db.businessDao().getFirst();
+            }
 
             if (business != null) {
+                final BusinessEntity b = business;
                 runOnUiThread(() -> {
-                    if (business.name != null) etBusinessName.setText(business.name);
-                    if (business.suburb != null) etSuburb.setText(business.suburb);
-                    if (business.businessType != null) etBusinessType.setText(business.businessType);
+                    if (b.name != null) etBusinessName.setText(b.name);
+                    if (b.suburb != null) etSuburb.setText(b.suburb);
+                    if (b.businessType != null) etBusinessType.setText(b.businessType);
                 });
             }
         });
@@ -70,7 +77,7 @@ public class BusinessProfileActivity extends AppCompatActivity {
         Executors.newSingleThreadExecutor().execute(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
             BusinessEntity entity = new BusinessEntity();
-            entity.firebaseUid = uid;
+            entity.firebaseUid = uid != null ? uid : "demo_guest_user";
             entity.name = name;
             entity.suburb = suburb;
             entity.businessType = type;

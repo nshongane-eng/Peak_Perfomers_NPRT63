@@ -16,4 +16,7 @@ public interface BusinessDao {
 
     @Query("SELECT * FROM business_profile WHERE firebase_uid = :uid LIMIT 1")
     BusinessEntity getByUid(String uid);
+
+    @Query("SELECT * FROM business_profile LIMIT 1")
+    BusinessEntity getFirst();
 }

@@ -95,6 +95,9 @@ public class LossesFragment extends Fragment {
                 if (firebaseAuth != null && firebaseAuth.getCurrentUser() != null) {
                     business = db.businessDao().getByUid(firebaseAuth.getCurrentUser().getUid());
                 }
+                if (business == null) {
+                    business = db.businessDao().getFirst();
+                }
                 final BusinessEntity finalBusiness = business;
 
                 if (getActivity() == null) return;

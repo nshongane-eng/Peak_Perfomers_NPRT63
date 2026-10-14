@@ -119,6 +119,19 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+        <!-- Demo Mode Button -->
+        <Button
+            android:id="@+id/btnDemoLogin"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/transparent"
+            android:text="⚡ Or Continue with Demo Mode"
+            android:textAllCaps="false"
+            android:textColor="@color/brand_orange"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"

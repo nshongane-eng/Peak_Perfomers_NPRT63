@@ -57,6 +57,17 @@ public class SettingsActivity extends AppCompatActivity {
         rowSyncData.setOnClickListener(v ->
                 Toast.makeText(this, "All local loss logs successfully synced with server!", Toast.LENGTH_LONG).show());
 
+        LinearLayout rowServerUrl = findViewById(R.id.rowServerUrl);
+        TextView tvCurrentServerUrl = findViewById(R.id.tvCurrentServerUrl);
+        if (tvCurrentServerUrl != null) {
+            String currentUrl = com.peakperformers.smartloadshedding.network.RetrofitClient.getBaseUrl(this);
+            tvCurrentServerUrl.setText(currentUrl.replace("http://", "").replace("https://", ""));
+        }
+
+        if (rowServerUrl != null) {
+            rowServerUrl.setOnClickListener(v -> showServerUrlDialog(tvCurrentServerUrl));
+        }
+
         btnSettingsSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
@@ -64,5 +75,38 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    private void showServerUrlDialog(TextView tvCurrentServerUrl) {
+        String currentUrl = com.peakperformers.smartloadshedding.network.RetrofitClient.getBaseUrl(this);
+        final android.widget.EditText input = new android.widget.EditText(this);
+        input.setText(currentUrl);
+        input.setSingleLine(true);
+        input.setPadding(40, 30, 40, 30);
+
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle("Configure API Server URL")
+                .setMessage("Enter the URL of your deployed backend server (e.g. https://your-backend.onrender.com/):")
+                .setView(input)
+                .setPositiveButton("Save", (dialog, which) -> {
+                    String newUrl = input.getText().toString().trim();
+                    com.peakperformers.smartloadshedding.network.RetrofitClient.setBaseUrl(this, newUrl);
+                    String updated = com.peakperformers.smartloadshedding.network.RetrofitClient.getBaseUrl(this);
+                    if (tvCurrentServerUrl != null) {
+                        tvCurrentServerUrl.setText(updated.replace("http://", "").replace("https://", ""));
+                    }
+                    Toast.makeText(this, "API Server URL updated!", Toast.LENGTH_SHORT).show();
+                })
+                .setNeutralButton("Reset Default", (dialog, which) -> {
+                    com.peakperformers.smartloadshedding.network.RetrofitClient.setBaseUrl(
+                            this, com.peakperformers.smartloadshedding.network.RetrofitClient.DEFAULT_BASE_URL);
+                    String updated = com.peakperformers.smartloadshedding.network.RetrofitClient.getBaseUrl(this);
+                    if (tvCurrentServerUrl != null) {
+                        tvCurrentServerUrl.setText(updated.replace("http://", "").replace("https://", ""));
+                    }
+                    Toast.makeText(this, "Reset to default URL", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }
